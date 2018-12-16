@@ -1,6 +1,8 @@
 package at.fhtw.swe;
 
+import at.fhtw.swe.controller.ValidationController;
 import at.fhtw.swe.model.ValidationError;
+import at.fhtw.swe.model.ValidationRequestBody;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
 package at.fhtw.swe.service;
 
+import static at.fhtw.swe.Constants.*;
 import static com.jayway.jsonpath.Criteria.where;
 import static com.jayway.jsonpath.Filter.filter;
 
@@ -27,42 +28,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Validator {
-
-    private static final String TYPE_GRID = "grid";
-    private static final String COMPONENT_KEY = "id";
-    private static final String TYPE_KEY = "type";
-    private static final String COMPONENT_TAG = "components";
-    private static final String CUSTOM_KEY = "custom";
-    private static final String MAX_LENGTH_KEY = "maxLength";
-    private static final String VALIDATE_KEY = "validate";
-    private static final String REQUIRED_KEY = "required";
-    private static final String EXTERNAL_KEY = "external";
-    private static final String MIN_KEY = "min";
-    private static final String DATE_MAX_KEY = "maxDate";
-    private static final String TYPE_DATETIME = "datetime";
-    private static final String MAX_KEY = "max";
-    private static final String ROW_NUM_PLACEHOLER = "@eval:rownum@";
-    private static final String PATTERN_KEY = "pattern";
-    private static final String INTERNAL_KEY = "internal";
-    private static final String CURRENT_DATE_PLACEHOLER = "@date:now@";
-    private static final String JSONATA_KEY = "jsonata";
-    private static final String DATE_MIN_KEY = "minDate";
-    private static final String GRID_INPUT_KEYS_QUERY =
-            "$.." + COMPONENT_TAG + "[?].." + COMPONENT_TAG + "[?]." + COMPONENT_KEY;
-    private static final String INPUTS_TO_VALIDATE_QUERY = "$.." + COMPONENT_TAG + "[?]";
-    private static final String MIN_LENGTH_KEY = "minLength";
-    private static final BiFunction<String, Integer, Boolean>
-            MIN_LENGTH_CHECK = (value, length) -> value.length() >= length,
-            MAX_LENGTH_CHECK = (value, length) -> value.length() <= length;
-    private static final BiFunction<Integer, Integer, Boolean>
-            MIN_ROW_COUNT_CHECK = (value, minRowCountVal) -> value >= minRowCountVal,
-            MAX_ROW_COUNT_CHECK = (value, maxRowCountVal) -> value <= maxRowCountVal;
-    private static final BiFunction<Double, Double, Boolean>
-            MIN_CHECK = (value, minVal) -> value >= minVal,
-            MAX_CHECK = (value, maxVal) -> value <= maxVal;
-    private static final BiFunction<Instant, Instant, Boolean>
-            DATE_MIN_CHECK = (value, dateMinVal) -> value.isAfter(dateMinVal),
-            DATE_MAX_CHECK = (value, dateMaxVal) -> value.isBefore(dateMaxVal);
 
     private JsonataEngine jsonataEngine;
     private JsonPath getInputsToValidate = JsonPath.compile(INPUTS_TO_VALIDATE_QUERY, filter(where("@." + VALIDATE_KEY).exists(true)));
