@@ -1,0 +1,21 @@
+{
+  "components": [
+    {
+      "id": "minNumber",
+      "type": "number",
+      "label": "Minimum",
+      "validate": {
+        "min": 5
+      }
+    },
+    {
+      "id": "maxNumber",
+      "type": "number",
+      "label": "Maximum",
+      "validate": {
+        "max": 5
+      }
+    }
+  ]
+}
+

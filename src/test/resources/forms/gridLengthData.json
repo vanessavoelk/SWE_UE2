@@ -1,0 +1,16 @@
+{
+  "beteiligtePersonen": [{
+    "vorname": "Max",
+    "nachname": "Mustermann"
+  }, {
+    "vorname": "Kein nachname"
+  }],
+  "weitereBeteiligtePersonen": [{
+    "vorname": "Max",
+    "nachname": "Mustermann"
+  }, {
+    "vorname": "Max",
+    "nachname": "Mustermann"
+  }]
+
+}
