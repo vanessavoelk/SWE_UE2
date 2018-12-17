@@ -3,14 +3,17 @@ package at.fhtw.swe.validators;
 import at.fhtw.swe.model.ValidationError;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.time.Instant;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
-import static at.fhtw.swe.Constants.PATTERN_KEY;
+import static at.fhtw.swe.Constants.*;
+import static at.fhtw.swe.Constants.DATE_MAX_CHECK;
 import static at.fhtw.swe.validators.Errors.createError;
 import static at.fhtw.swe.validators.ValidationInstruction.extractValidationInstruction;
 
-public class PatternValidator {
-    public static Optional<ValidationError> validatePattern(
+public class PatternValidator implements Validator{
+    public static Optional<ValidationError> validate(
             JsonNode value,
             JsonNode validationInstruction,
             String key,

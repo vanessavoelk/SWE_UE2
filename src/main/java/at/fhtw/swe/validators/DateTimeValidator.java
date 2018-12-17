@@ -11,15 +11,32 @@ import static at.fhtw.swe.Constants.*;
 import static at.fhtw.swe.validators.Errors.createError;
 import static at.fhtw.swe.validators.ValidationInstruction.extractValidationInstruction;
 
-public class DateTimeValidator {
-    public static Optional<ValidationError> validateDateTime(
+public class DateTimeValidator implements Validator{
+    private static String validationKey;
+    private static BiFunction<Instant, Instant, Boolean> dateCheck;
+
+    private DateTimeValidator() {
+    }
+
+    public static DateTimeValidator createMinDateValidator(){
+        validationKey = DATE_MIN_KEY;
+        dateCheck = DATE_MIN_CHECK;
+        return new DateTimeValidator();
+    }
+
+    public static DateTimeValidator createMaxDateValidator(){
+        validationKey = DATE_MAX_KEY;
+        dateCheck = DATE_MAX_CHECK;
+        return new DateTimeValidator();
+    }
+
+    public static Optional<ValidationError> validate(
             JsonNode value,
             JsonNode datePickerInstruction,
             String hashKey,
             Integer row,
-            String validationKey,
-            boolean internal,
-            BiFunction<Instant, Instant, Boolean> dateCheck) {
+            boolean internal) {
+
         final String currDate =
                 extractValidationInstruction(datePickerInstruction, validationKey, internal)
                         .map(JsonNode::asText)
@@ -31,25 +48,5 @@ public class DateTimeValidator {
                     .map(valid -> valid ? null : createError(hashKey, row, validationKey));
         }
         return Optional.empty();
-    }
-
-    public static Optional<ValidationError> validateDateMin(
-            JsonNode value,
-            JsonNode datePickerInstruction,
-            String key,
-            Integer row,
-            boolean internal) {
-        return validateDateTime(
-                value, datePickerInstruction, key, row, DATE_MIN_KEY, internal, DATE_MIN_CHECK);
-    }
-
-    public static Optional<ValidationError> validateDateMax(
-            JsonNode value,
-            JsonNode datePickerInstruction,
-            String key,
-            Integer row,
-            boolean internal) {
-        return validateDateTime(
-                value, datePickerInstruction, key, row, DATE_MAX_KEY, internal, DATE_MAX_CHECK);
     }
 }

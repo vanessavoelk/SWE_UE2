@@ -2,7 +2,7 @@ package at.fhtw.swe.controller;
 
 import at.fhtw.swe.model.ValidationRequestBody;
 import at.fhtw.swe.model.ValidationError;
-import at.fhtw.swe.validators.Validator;
+import at.fhtw.swe.validators.ValidatorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +11,9 @@ import java.util.Set;
 @RestController
 public class ValidationController {
 
-    private Validator validator;
+    private ValidatorService validator;
 
-    public ValidationController(Validator validator) {
+    public ValidationController(ValidatorService validator) {
         this.validator = validator;
     }
 

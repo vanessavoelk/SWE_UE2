@@ -11,38 +11,40 @@ import static at.fhtw.swe.validators.Errors.createError;
 import static at.fhtw.swe.validators.ExternalValidator.getExternalValidations;
 
 public class RowCountValidator {
+    private static String validationKey;
+    private static BiFunction<Integer, Integer, Boolean> rowCountCheck;
+    private RowCountValidator() {
+    }
+
+    public static RowCountValidator createMinRowCountValidator(){
+        validationKey = MIN_LENGTH_KEY;
+        rowCountCheck = MIN_ROW_COUNT_CHECK;
+        return new RowCountValidator();
+    }
+
+    public static RowCountValidator createMaxRowCountValidator(){
+        validationKey = MAX_LENGTH_KEY;
+        rowCountCheck = MAX_ROW_COUNT_CHECK;
+        return new RowCountValidator();
+    }
+    
     public static Optional<ValidationError> validateRowCountValue(
             JsonNode value,
             JsonNode validationInstruction,
             String hashKey,
-            Integer row,
-            String validationKey,
-            BiFunction<Integer, Integer, Boolean> rowCountCheck) {
-        final Integer val =
-                Optional.ofNullable(getExternalValidations(validationInstruction, validationKey))
-                        .map(JsonNode::asInt)
-                        .orElse(null);
-        return Optional.ofNullable(value)
-                .map(JsonNode::size)
-                .map(valueNumber -> rowCountCheck.apply(valueNumber, val))
-                .map(valid -> valid ? null : createError(hashKey, row, validationKey));
-    }
+            Integer row) {
+        if (validationInstruction.has(validationKey)) {
 
-    public static Optional<ValidationError> validateMinRowCount(
-            JsonNode value, JsonNode validationInstruction, String key, Integer row) {
-        if (validationInstruction.has(MIN_LENGTH_KEY)) {
-            return validateRowCountValue(
-                    value, validationInstruction, key, row, MIN_LENGTH_KEY, MIN_ROW_COUNT_CHECK);
+            final Integer val =
+                    Optional.ofNullable(getExternalValidations(validationInstruction, validationKey))
+                            .map(JsonNode::asInt)
+                            .orElse(null);
+            return Optional.ofNullable(value)
+                    .map(JsonNode::size)
+                    .map(valueNumber -> rowCountCheck.apply(valueNumber, val))
+                    .map(valid -> valid ? null : createError(hashKey, row, validationKey));
         }
-        return Optional.empty();
-    }
 
-    public static Optional<ValidationError> validateMaxRowCount(
-            JsonNode value, JsonNode validationInstruction, String key, Integer row) {
-        if (validationInstruction.has(MAX_LENGTH_KEY)) {
-            return validateRowCountValue(
-                    value, validationInstruction, key, row, MAX_LENGTH_KEY, MAX_ROW_COUNT_CHECK);
-        }
         return Optional.empty();
     }
 
